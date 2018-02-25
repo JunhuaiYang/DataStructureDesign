@@ -4,5 +4,7 @@
 #include"AVL.h"
 #include"paint.h"
 
+void menu(void);
+void ADT_menu(void);
 
 #endif // MENU_H_INCLUDED

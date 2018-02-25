@@ -158,7 +158,6 @@ void TraverseAVL(AVLtree p, void (*visit)(Info data))
 {
     if(p == NULL) return;
 
-    Info re;
     TraverseAVL(p->lchild,visit);  //中序遍历
     visit(p->data);
     TraverseAVL(p->rchild,visit);
@@ -240,10 +239,10 @@ AVLtree FindMinNode(AVLtree tree)
         return FindMinNode(tree->lchild);
 }
 
-Info JustPrintfId(Info data)
+void JustPrintfId(Info data)
 {
     printf("%d  ",data.id); //中序遍历输出
-    return 0;     //返回0匹配接口
+    return;     //返回0匹配接口
 }
 
 Info GetTraverseInfo(Info data)
@@ -331,7 +330,7 @@ void Intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
     if(T == NULL) return;  //遍历T
 
     Intersection(T->lchild, T1, NEWTREE);
-    if(SearchAVL(T1, T->data->id))               //找T1中是否存在该节点
+    if(SearchAVL(T1, T->data.id))               //找T1中是否存在该节点
         *NEWTREE = InsertAVL(*NEWTREE, T->data);  //若存在则放NEWTREE
     Intersection(T->rchild, T1, NEWTREE);
 
@@ -348,7 +347,7 @@ void set_union(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
     if(T)  //现将T放入新树
         Union(T, NEWTREE);
     if(T1)  //再将T1放入新树
-        Union(T1, NEWTREE;)
+        Union(T1, NEWTREE);
 
     return;
 
@@ -381,7 +380,7 @@ void Difference(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
     if(T == NULL) return;  //遍历T
 
     Intersection(T->lchild, T1, NEWTREE);
-    if(!SearchAVL(T1, T->data->id))               //找T1中是否存在该节点
+    if(!SearchAVL(T1, T->data.id))               //找T1中是否存在该节点
         *NEWTREE = InsertAVL(*NEWTREE, T->data);   //若不存在则放NEWTREE
     Intersection(T->rchild, T1, NEWTREE);
 

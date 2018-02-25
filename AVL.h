@@ -23,7 +23,7 @@ typedef struct AVLNode
     struct AVLNode *lchild,*rchild;    //左右子树
 } AVLNode,*AVLtree;
 
-extern int set_size(AVLtree T)
+extern int set_size(AVLtree T);
 
 //6种基本运算
 bool InitAVL(AVLtree *T);

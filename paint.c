@@ -1,5 +1,7 @@
 #include"paint.h"
 
+HANDLE gh_std_out;          /*标准输出设备句柄*/
+DWORD ul; //着色长度
 
 /**
  * 函数名称: GotoXY
@@ -37,32 +39,6 @@ void Show_Cursor(BOOL boo)
     SetConsoleCursorInfo(gh_std_out, &lpCur);
 }
 
-/**
- * 函数名称: ClearScreen
- * 函数功能: 清除屏幕信息.
- * 输入参数: 无
- * 输出参数: 无
- * 返 回 值: 无
- *
- * 调用说明:
- */
-void ClearScreen(void)
-{
-    CONSOLE_SCREEN_BUFFER_INFO bInfo;
-    COORD home = {0, 0}; //COORD是一个结构，表示坐标
-    unsigned long size;
-
-    GetConsoleScreenBufferInfo( gh_std_out, &bInfo );//检索取屏幕缓冲区信息
-    size =  bInfo.dwSize.X * bInfo.dwSize.Y; /*计算屏幕缓冲区字符单元数*/
-
-    /*将屏幕缓冲区所有单元的字符属性设置为当前屏幕缓冲区字符属性*/
-    FillConsoleOutputAttribute(gh_std_out, bInfo.wAttributes, size, home, &ul); //API函数，用来给控制台的部分字体着色。
-
-    /*将屏幕缓冲区所有单元填充为空格字符*/
-    FillConsoleOutputCharacter(gh_std_out, ' ', size, home, &ul);
-
-    return;
-}
 
 /**
  * 函数名称: DrawBox
