@@ -2,3 +2,23 @@
 1514140574 source:e:\study\project\datastructuredesign\main.cpp
 	<iostream>
 
+1519463654 source:e:\study\project\datastructuredesign\main.c
+	"AVL.h"
+
+1519545482 e:\study\project\datastructuredesign\avl.h
+	<stdio.h>
+	<malloc.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	<stdbool.h>
+	"weibo.h"
+
+1519373469 e:\study\project\datastructuredesign\weibo.h
+	"AVL.h"
+
+1519475668 source:e:\study\project\datastructuredesign\avl.c
+	"AVL.h"
+
+1519479882 source:e:\study\project\datastructuredesign\weibo.c
+

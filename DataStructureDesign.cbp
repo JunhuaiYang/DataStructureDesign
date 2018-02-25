@@ -36,6 +36,20 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="AVL.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="menu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="menu.h" />
+		<Unit filename="paint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="paint.h" />
+		<Unit filename="weibo.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="weibo.h" />
 		<Extensions>
 			<code_completion />
