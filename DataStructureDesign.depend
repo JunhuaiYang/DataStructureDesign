@@ -6,7 +6,7 @@
 	"AVL.h"
 	"menu.h"
 
-1519723503 e:\study\project\datastructuredesign\avl.h
+1519730246 e:\study\project\datastructuredesign\avl.h
 	<stdio.h>
 	<malloc.h>
 	<stdlib.h>
@@ -18,19 +18,19 @@
 1519373469 e:\study\project\datastructuredesign\weibo.h
 	"AVL.h"
 
-1519725019 source:e:\study\project\datastructuredesign\avl.c
+1519734016 source:e:\study\project\datastructuredesign\avl.c
 	"AVL.h"
 
 1519479882 source:e:\study\project\datastructuredesign\weibo.c
 
-1519723674 source:e:\study\project\datastructuredesign\menu.c
+1519737314 source:e:\study\project\datastructuredesign\menu.c
 	"menu.h"
 
 1519644440 e:\study\project\datastructuredesign\menu.h
 	"AVL.h"
 	"paint.h"
 
-1519725052 e:\study\project\datastructuredesign\paint.h
+1519725497 e:\study\project\datastructuredesign\paint.h
 	"AVL.h"
 	<windows.h>
 	<wincon.h>
@@ -38,6 +38,6 @@
 	<io.h>
 	<math.h>
 
-1519725042 source:e:\study\project\datastructuredesign\paint.c
+1519725497 source:e:\study\project\datastructuredesign\paint.c
 	"paint.h"
 

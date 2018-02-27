@@ -16,8 +16,4 @@ void GotoXY(int x, int y);
 void Show_Cursor(BOOL boo);
 void DrawBox(SMALL_RECT *pRc);
 
-void PaintTree(AVLtree T);
-void paint_LevelOrderTraverse(AVLtree T, AVLtree *F,AVLtree *H );
-void tree_print(int i);
-
 #endif // PAINT_H_INCLUDED

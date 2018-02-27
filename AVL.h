@@ -82,4 +82,8 @@ bool InOrderTraverse(AVLtree T,void (*visit)(Info c) );
 bool PostOrderTraverse(AVLtree T,void (*visit)(Info c) );
 bool LevelOrderTraverse(AVLtree T,void (*visit)(Info c), AVLtree *F,AVLtree *H );
 
+bool SaveADTData(AVLLink *head);
+bool SaveInOrderTraverse(AVLtree T,FILE *fp);
+bool LoadADTData(AVLLink **head);
+
 #endif // AVL_H_INCLUDED

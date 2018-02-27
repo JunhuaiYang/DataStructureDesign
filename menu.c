@@ -37,7 +37,7 @@ void ADT_menu()
     printf("\n\n                     13. PreOrderTraverse          14. InOrderTraverse");
     printf("\n                     15. PostOrderTraverse         16. PostOrderTraverse");
     printf("\n\n                     17. SaveADTData                  18. LoadADTData");
-    printf("\n\n                     19. PaintTree                    0.  Back                ");
+    printf("\n\n                     0.  Back                ");
 
     DrawBox(&Rec);
     GotoXY(2,21);
@@ -47,11 +47,12 @@ void ADT_menu()
 void ADT_main(void)
 {
     int op = 1;
-    int sn, i, t;
+    int t, sn, i;
     char name[10];
     AVLLink *temp, *temp2;
     AVLtree queue[100];
     Info tinfo;
+    int array[100];
 
     while(op)
     {
@@ -61,8 +62,19 @@ void ADT_main(void)
         switch (op)
         {
         case 1:   //set_init
-            set_init(&gp_tree_head);
+            temp = set_init(&gp_tree_head);
             printf("节点创建成功！\n");
+
+            printf("请输入要插入的数据的个数：");
+            scanf("%d", &sn);
+            printf("\n请输入要插入的元素：\n");
+            for(i=0; i<sn; i++)
+            {
+                scanf("%d", &array[i]);
+                printf("    ");
+            }
+            set_AVL(temp, array, sn);
+            printf("\n新建成功！");
             getch();
             break;
 
@@ -74,28 +86,23 @@ void ADT_main(void)
             getch();
             break;
 
-        case 3:  //set_AVL
-            {
-            if(gp_tree_head == NULL)   //没有初始化头结点
-            {
-                printf("当前没有初始化节点，请初始化！");
-                getch();
-                break;
-            }
+        case 3:  //set_AVL      同set_init
+            temp = set_init(&gp_tree_head);
+            printf("节点创建成功！\n");
+
             printf("请输入要插入的数据的个数：");
             scanf("%d", &sn);
-            int array[100];
             printf("\n请输入要插入的元素：\n");
             for(i=0; i<sn; i++)
             {
                 scanf("%d", &array[i]);
                 printf("    ");
             }
-            set_AVL(gp_tree_head, array, sn);
+            set_AVL(temp, array, sn);
             printf("\n新建成功！");
             getch();
+
             break;
-            }
 
         case 4:  //set_insert
             if(gp_tree_head == NULL)  //没有初始化头结点
@@ -157,6 +164,7 @@ void ADT_main(void)
                     printf("\n删除成功！");
                 else
                     printf("\n删除失败");
+
             }
             else
             {
@@ -195,17 +203,19 @@ void ADT_main(void)
                 printf("\n新初始化一棵树用于保存！");
                 AVLLink *newlink = set_init(&gp_tree_head);  //新初始化一棵树用于保存！
                 set_intersection(temp->tree, temp2->tree, &newlink->tree);
-                if(newlink)
+                if(newlink->tree)
                 {
                     printf("\n两树的交集为：");
                     InOrderTraverse(newlink->tree, JustPrintfId);   //中序遍历输出该树
                 }
                 else
                     printf("\n两树的交集为空集！");
+                getch();
             }
             else  //找不到
             {
                 printf("查找失败！！！找不到该二叉树！");
+                getch();
             }
 
             break;
@@ -240,17 +250,19 @@ void ADT_main(void)
                 printf("\n新初始化一棵树用于保存！");
                 AVLLink *newlink = set_init(&gp_tree_head);  //新初始化一棵树用于保存！
                 set_union(temp->tree, temp2->tree, &newlink->tree);
-                if(newlink)
+                if(newlink->tree)
                 {
                     printf("\n两树的并集为：");
                     InOrderTraverse(newlink->tree, JustPrintfId);   //中序遍历输出该树
                 }
                 else
                     printf("\n两树的并集为空集！");
+                getch();
             }
             else  //找不到
             {
                 printf("查找失败！！！找不到该二叉树！");
+                getch();
             }
 
             break;
@@ -270,12 +282,13 @@ void ADT_main(void)
                 temp = temp->next;
             }
 
-            printf("\n请输输入要取差集的第一个集合：");   //找第一个
+            printf("\n该操作取A-B的差集");
+            printf("\n请输输入要取差集的第一个集合A：");   //找第一个
             scanf("%s",name);
             temp = NULL;
             temp = FindAVLLink(gp_tree_head, name);
 
-            printf("\n请输输入要取差集的第二个集合：");  //找第二个
+            printf("\n请输输入要取差集的第二个集合B：");  //找第二个
             scanf("%s",name);
             temp2 = NULL;
             temp2 = FindAVLLink(gp_tree_head, name);
@@ -285,7 +298,7 @@ void ADT_main(void)
                 printf("\n新初始化一棵树用于保存！");
                 AVLLink *newlink = set_init(&gp_tree_head);  //新初始化一棵树用于保存！
                 set_difference(temp->tree, temp2->tree, &newlink->tree);
-                if(newlink)
+                if(newlink->tree)
                 {
                     printf("\n两树的差集为：");
                     InOrderTraverse(newlink->tree, JustPrintfId);   //中序遍历输出该树
@@ -297,6 +310,7 @@ void ADT_main(void)
             {
                 printf("查找失败！！！找不到该二叉树！");
             }
+            getch();
             break;
 
         case 9:  //set_size
@@ -322,10 +336,12 @@ void ADT_main(void)
             if(temp)   //找到
             {
                 printf("\n该集合的成员个数为 %d", set_size(temp->tree));
+                getch();
             }
             else  //找不到
             {
                 printf("\n找不到该集合！");
+                getch();
             }
             break;
 
@@ -357,10 +373,12 @@ void ADT_main(void)
                     printf("\n该元素存在！");
                 else
                     printf("\n该元素不存在！");
+                getch();
             }
             else  //找不到
             {
                 printf("\n找不到该集合！");
+                getch();
             }
             break;
 
@@ -398,10 +416,12 @@ void ADT_main(void)
                 }
                 else
                     printf("\nT 不为 P 的子集！");
+                getch();
             }
             else  //找不到
             {
                 printf("查找失败！！！找不到该二叉树！");
+                getch();
             }
             break;
 
@@ -439,10 +459,12 @@ void ADT_main(void)
                 }
                 else
                     printf("\n两树不相等！！");
+                getch();
             }
             else  //找不到
             {
                 printf("查找失败！！！找不到该二叉树！");
+                getch();
             }
             break;
 
@@ -494,7 +516,7 @@ void ADT_main(void)
             while(temp)
             {
                 printf("\n%s:  ", temp->name);
-                PreOrderTraverse(temp->tree, JustPrintfId);
+                PostOrderTraverse(temp->tree, JustPrintfId);
                 temp = temp->next;
             }
             getch();
@@ -519,40 +541,11 @@ void ADT_main(void)
             break;
 
         case 17:  //SaveADTData
+            SaveADTData(gp_tree_head);
             break;
 
         case 18:  //LoadADTData
-            break;
-
-        case 19:  //PaintTree
-            if(gp_tree_head == NULL)  //没有初始化头结点
-            {
-                printf("当前没有初始化节点，请初始化！");
-                getch();
-                break;
-            }
-            printf("当前存在的树：\n");
-            temp = gp_tree_head;
-            while(temp)         //遍历输出当前存在的树
-            {
-                printf("%s    ",temp->name);
-                temp = temp->next;
-            }
-
-            printf("\n请输输入要打印的二叉树：");
-            scanf("%s",name);
-            temp = NULL;
-            temp = FindAVLLink(gp_tree_head, name);
-
-            if(temp)   //找到
-            {
-                PaintTree(temp->tree);
-            }
-            else  //找不到
-            {
-                printf("\n找不到该集合！");
-            }
-            break;
+            LoadADTData(&gp_tree_head);
             break;
 
         default:

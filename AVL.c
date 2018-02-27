@@ -106,21 +106,29 @@ AVLtree DeleteAVL(AVLtree tree, AVLNode *z)
     {
         tree->lchild = DeleteAVL(tree->lchild, z); //递归去找删除节点
         //平衡处理，左子树失去平衡，应该处理右子树
-        AVLNode *right = tree->rchild;
-        if(GetBlanceFactor(right) < 0 )   //右高
-            tree = Right_Left_Rotate(tree);     //相当于插入时的RL情况
-        else
-            tree = Right_Right_Rotate(tree);        //相当于插入时的RR情况
+        // 删除节点后，若AVL树失去平衡，则进行相应的调节。
+        if(GetBlanceFactor(tree) == -2)
+        {
+            AVLNode *right = tree->rchild;
+            if(GetBlanceFactor(right) < 0 )   //右高
+                tree = Right_Right_Rotate(tree);        //相当于插入时的RR情况
+            else
+                tree = Right_Left_Rotate(tree);     //相当于插入时的RL情况
+        }
     }
     else if(z->data.id > tree->data.id)     //待删除的在右子树
     {
         tree->rchild = DeleteAVL(tree->rchild, z); //递归去找删除节点
         //平衡处理，右子树失去平衡，应该处理左子树
-        AVLNode *left = tree->lchild;
-        if(GetBlanceFactor(left) > 0)   // 左高
-            tree = Left_Right_Rotate(tree);   //相当于插入时的LR情况
-        else
-            tree = Left_Left_Rotate(tree);     //相当于插入时的LL情况
+        // 删除节点后，若AVL树失去平衡，则进行相应的调节。
+        if(GetBlanceFactor(tree)  == 2)
+        {
+            AVLNode *left = tree->lchild;
+            if(GetBlanceFactor(left) > 0)   // 左高
+                tree = Left_Left_Rotate(tree);     //相当于插入时的LL情况
+            else
+                tree = Left_Right_Rotate(tree);   //相当于插入时的LR情况
+        }
     }
     else   //tree 就是要删的
     {
@@ -257,6 +265,7 @@ AVLLink* set_init(AVLLink **head)
 {
     AVLLink *p;
     //如果当前不存在AVL树
+
     if(*head == NULL)
     {
         *head = (AVLLink*)malloc(sizeof(AVLLink));    //不存在
@@ -446,10 +455,10 @@ void Difference(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 {
     if(T == NULL) return;  //遍历T
 
-    Intersection(T->lchild, T1, NEWTREE);
+    Difference(T->lchild, T1, NEWTREE);
     if(!SearchAVL(T1, T->data.id))               //找T1中是否存在该节点
         *NEWTREE = InsertAVL(*NEWTREE, T->data);   //若不存在则放NEWTREE
-    Intersection(T->rchild, T1, NEWTREE);
+    Difference(T->rchild, T1, NEWTREE);
 
     return;
 }
@@ -600,5 +609,108 @@ bool LevelOrderTraverse(AVLtree T,void (*visit)(Info c), AVLtree *F,AVLtree *H )
 
 bool SaveADTData(AVLLink *head)
 {
+    if(head == NULL)   //先判断
+    {
+        printf("当前不存在保存树的线性表！请初始化再保存！");
+        getch();
+        return false;
+    }
+    FILE *fp = fopen("AVLtree.dat","w");   //只写的方式打开文件
+    int length = 0;
+    AVLLink *p = head;
+    while(p)       //统计链表信息
+    {
+        length++;
+        p = p->next;
+    }
 
+    if(fp != NULL)
+    {
+        fprintf(fp, "%d\n", length);   //第一行保存链表个数
+        for(p = head; p; p = p->next)
+        {
+            fprintf(fp,"%s  %d  ",p->name, set_size(p->tree));   //开头保存二叉树名字   长度
+            SaveInOrderTraverse(p->tree, fp);
+            fprintf(fp,"\n");
+        }
+        fclose(fp);
+        printf("\n文件保存成功！");
+        getch();
+        return true;
+    }
+    else
+    {
+        printf("文件打开失败！");
+        return false;
+    }
+}
+
+bool SaveInOrderTraverse(AVLtree T,FILE *fp)
+{
+    if(T == NULL) return false;
+
+    SaveInOrderTraverse(T->lchild, fp);   //访问左子树
+    fprintf(fp,"%d  ", T->data.id);               //访问根节点
+    SaveInOrderTraverse(T->rchild, fp);   //访问右子树
+
+    return true;
+}
+
+bool LoadADTData(AVLLink **head)
+{
+    FILE *fp = fopen("AVLtree.dat","r");   //只读的方式打开文件
+    AVLLink *p = *head;
+    int length, i, c, j, array[100];
+
+    if(fp)
+    {
+        if(p != NULL)  //当前链表不为空的话
+        {
+            while(p->next)   //查找
+                p = (p)->next;
+            p->next = (AVLLink*)malloc(sizeof(AVLLink));
+            p = p->next;
+            (p)->next = NULL;
+            (p)->tree = NULL;
+        }
+        else
+        {
+            *head = (AVLLink*)malloc(sizeof(AVLLink));
+            p = *head;
+            (p)->next = NULL;
+            (p)->tree = NULL;
+        }
+
+        fscanf(fp, "%d", &length);  //读取长度
+
+        for(i=0; i<length; i++)
+        {
+            fscanf(fp,"%s %d", (p)->name, &c);
+            for(j=0; j<c; j++)
+            {
+                fscanf(fp, "%d", &array[j]);
+            }
+            set_AVL((p), array, c);
+
+            if(i == length-1)
+            {
+                (p)->next = NULL;
+            }
+            else
+            {
+                p->next = (AVLLink*)malloc(sizeof(AVLLink));
+                (p) = (p)->next;
+                (p)->tree = NULL;
+            }
+        }
+        printf("文件读取成功！");
+        getch();
+        return true;
+    }
+    else
+    {
+        printf("文件打开失败！");
+        getch();
+        return false;
+    }
 }
