@@ -7,6 +7,7 @@
 #include<wincon.h>
 #include<conio.h>  //控制台函数用的头文件
 #include<io.h>    //IO
+#include<math.h>
 
 HANDLE gh_std_out;
 DWORD ul;
@@ -14,5 +15,9 @@ DWORD ul;
 void GotoXY(int x, int y);
 void Show_Cursor(BOOL boo);
 void DrawBox(SMALL_RECT *pRc);
+
+void PaintTree(AVLtree T);
+void paint_LevelOrderTraverse(AVLtree T, AVLtree *F,AVLtree *H );
+void tree_print(int i);
 
 #endif // PAINT_H_INCLUDED

@@ -6,5 +6,6 @@
 
 void menu(void);
 void ADT_menu(void);
+void ADT_main(void);
 
 #endif // MENU_H_INCLUDED

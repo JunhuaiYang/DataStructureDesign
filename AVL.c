@@ -1,6 +1,7 @@
 #include"AVL.h"
 
 int count;  //全局变量count
+AVLLink *gp_tree_head;    //全局头结点
 
 //6种基本运算
 bool InitAVL(AVLtree *T)
@@ -106,20 +107,20 @@ AVLtree DeleteAVL(AVLtree tree, AVLNode *z)
         tree->lchild = DeleteAVL(tree->lchild, z); //递归去找删除节点
         //平衡处理，左子树失去平衡，应该处理右子树
         AVLNode *right = tree->rchild;
-        if(GetBlanceFactor(right) == -2)
-            tree = Right_Right_Rotate(tree);        //相当于插入时的RR情况
-        else
+        if(GetBlanceFactor(right) < 0 )   //右高
             tree = Right_Left_Rotate(tree);     //相当于插入时的RL情况
+        else
+            tree = Right_Right_Rotate(tree);        //相当于插入时的RR情况
     }
     else if(z->data.id > tree->data.id)     //待删除的在右子树
     {
         tree->rchild = DeleteAVL(tree->rchild, z); //递归去找删除节点
         //平衡处理，右子树失去平衡，应该处理左子树
         AVLNode *left = tree->lchild;
-        if(GetBlanceFactor(left) == 2)
-            tree = Left_Left_Rotate(tree);     //相当于插入时的LL情况
-        else
+        if(GetBlanceFactor(left) > 0)   // 左高
             tree = Left_Right_Rotate(tree);   //相当于插入时的LR情况
+        else
+            tree = Left_Left_Rotate(tree);     //相当于插入时的LL情况
     }
     else   //tree 就是要删的
     {
@@ -145,9 +146,9 @@ AVLtree DeleteAVL(AVLtree tree, AVLNode *z)
         }
         else  //tree的左子树或者右子树为空时，直接移动到根部
         {
-            AVLNode *temp =tree;
-            tree = temp->lchild ? temp->lchild :temp->rchild;
-            free(temp);
+            AVLNode *temp =tree;   //保存之前的根节点指向
+            tree = tree->lchild ? tree->lchild :tree->rchild;
+            free(temp);     //释放
         }
     }
 
@@ -250,31 +251,97 @@ Info GetTraverseInfo(Info data)
     return data;          //直接返回Info
 }
 
+
 //ADT基本运算
-void set_init(AVLtree *T)
+AVLLink* set_init(AVLLink **head)
 {
-    //如果当前存在AVL树
-    if(*T != NULL)
+    AVLLink *p;
+    //如果当前不存在AVL树
+    if(*head == NULL)
     {
-        printf("当前已存在AVL树，请销毁后再创建\n");
-        return;
+        *head = (AVLLink*)malloc(sizeof(AVLLink));    //不存在
+        (*head)->next = NULL;
+        p = *head;
     }
-    InitAVL(T);    //调用InitAVL
-    return;
+    else
+    {
+        p = *head;
+        while(p->next)   //查找
+            p = p->next;
+        p->next = (AVLLink*)malloc(sizeof(AVLLink));    //新建节点
+        p = p ->next;
+        p->next = NULL;
+    }
+
+    printf("请输入该二叉树的名字：\n");
+    scanf("%s",p->name);
+    p->tree = NULL;
+
+    return p;
 }
 
-void set_destory(AVLtree *T)
+bool set_destory(AVLLink **head)
 {
-    if(*T == NULL)
+    AVLLink *p = *head, *temp = NULL;
+    char sname[10];
+    if((*head) == NULL)         //不存在的话操作不成功
     {
-        printf("当前不存在AVL树，请创建！\n");
-        return;
+        printf("当前不存在树，请初始化创建！");
+        return false;
     }
+    printf("当前存在的树：\n");
+    while(p)         //遍历输出当前存在的树
+    {
+        printf("%s    ",p->name);
+        p = p->next;
+    }
+    printf("\n请输入要销毁的树的名字：");
+    scanf("%s",sname);
+    p = *head;
+    if(!strcmp(sname,p->name))   //当第一个就是的话
+    {
+        *head = p->next;  //要更改头结点指向
+        DestroyAVL(&p->tree);
+        free(p);
+    }
+    else
+    {
+        temp = p;
+        p = p->next;
+        while(p)
+        {
+            if(!strcmp(sname,p->name))    //找到p，temp是p的父节点
+            {
+                break;
+            }
+            p = p->next;
+            temp = temp->next;
+        }
+        if(p)   //如果找到
+        {
+            temp->next = p->next;   //将p移除链表
+            DestroyAVL(&p->tree);   //调用AVL销毁函数
+            free(p);            //将p从链表中free
+            return true;
+        }
+        else   //如果没有找到
+            return false;
+    }
+    return true;
 
-    DestroyAVL(T);
-    return;
 }
 
+bool set_AVL(AVLLink *p, int *array, int count)
+{
+    Info temp;
+    int i;
+    for(i=0; i<count; i++)    //循环将数组插入到其中
+    {
+        temp.id = array[i];
+        p->tree = InsertAVL(p->tree, temp);
+    }
+    return true;
+}
 
 bool set_insert(AVLtree *T,Info e)
 {
@@ -365,14 +432,14 @@ void Union(AVLtree T, AVLtree *newtree)
 }
 
 
-void set_difference(AVLtree *T,AVLtree T1, AVLtree *NEWTREE)
+void set_difference(AVLtree T,AVLtree T1, AVLtree *NEWTREE)
 {
     //如果NEWTREE存在的话，将其销毁
     if(*NEWTREE)
     {
         DestroyAVL(NEWTREE);
     }
-
+    Difference(T, T1, NEWTREE);
 }
 
 void Difference(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
@@ -404,7 +471,8 @@ bool set_member(AVLtree T,int key)
 {
     if(SearchAVL(T, key))  //直接调用
         return true;
-    else return false;
+    else
+        return false;
 }
 
 bool set_subset(AVLtree TS,AVLtree T1)
@@ -441,7 +509,96 @@ bool set_equal(AVLtree T,AVLtree T1)
 }
 
 
+AVLLink* FindAVLLink(AVLLink *head, char* name)
+{
+    AVLLink *p = head;
+    while(p)
+    {
+        if(!strcmp(p->name, name))  //找到
+            return p;
+        p = p->next;
+    }
+    return NULL;    //找不到
+}
 
+/** \brief 前序遍历：函数名称是PreOrderTraverse(T,Visit())；
+*        初始条件是二叉树T存在，Visit是对结点操作的应用函数；操作结果：先序遍历t，
+*          对每个结点调用函数Visit一次且一次，一旦调用失败，则操作失败。
+*/
+bool PreOrderTraverse(AVLtree T,void (*visit)(Info c) )
+{
+    if(T == NULL) return false;
 
+    visit(T->data);                //先访问根节点
+    PreOrderTraverse(T->lchild, visit);   //访问左子树
+    PreOrderTraverse(T->rchild, visit);   //访问右子树
 
+    return true;
+}
 
+/** \brief 中序遍历：函数名称是InOrderTraverse(T,Visit))；(T)
+*        初始条件是二叉树T存在，Visit是对结点操作的应用函数；操作结果是中序遍历t，
+*          对每个结点调用函数Visit一次且一次，一旦调用失败，则操作失败。
+*/
+bool InOrderTraverse(AVLtree T,void (*visit)(Info c) )
+{
+    if(T == NULL) return false;
+
+    InOrderTraverse(T->lchild, visit);   //访问左子树
+    visit(T->data);                //访问根节点
+    InOrderTraverse(T->rchild, visit);   //访问右子树
+
+    return true;
+}
+
+/** \brief 后序遍历：函数名称是PostOrderTraverse(T,Visit))；(T)
+*        初始条件是二叉树T存在，Visit是对结点操作的应用函数；操作结果是后序遍历t，
+*          对每个结点调用函数Visit一次且一次，一旦调用失败，则操作失败
+*/
+bool PostOrderTraverse(AVLtree T,void (*visit)(Info c) )
+{
+    if(T == NULL) return false;
+
+    PostOrderTraverse(T->lchild, visit);   //访问左子树
+    PostOrderTraverse(T->rchild, visit);   //访问右子树
+    visit(T->data);                //最后访问根节点
+
+    return true;
+}
+
+/** \brief 按层遍历：函数名称是LevelOrderTraverse(T,Visit))；
+*        初始条件是二叉树T存在，Visit是对结点操作的应用函数；操作结果是层序遍历t，
+*          对每个结点调用函数Visit一次且一次，一旦调用失败，则操作失败
+*          通过队列来实现
+*          F是队列的尾指针，H是队列的头指针，定义在主函数中
+*/
+bool LevelOrderTraverse(AVLtree T,void (*visit)(Info c), AVLtree *F,AVLtree *H )
+{
+    if(T == NULL)
+        return false;
+    *F=T;            //将当前节点放入队列首指针所指位置
+    visit((*F)->data);   //输出尾指针
+
+    if((*F)->lchild != NULL)
+    {
+        H=H+1;             //头指针后移
+        *H=(*F)->lchild;    //节点的左儿子放入队头
+    }
+    if((*F)->rchild != NULL)
+    {
+        H=H+1;                //头针向后移动一格
+        *H=(*F)->rchild;    //节点的右儿子放入队头
+    }
+
+    F=F+1;    //尾指针后移一位
+    if(F != H || (*F)->lchild != NULL || (*F)->rchild != NULL)   //当队头不等于队尾时递归， 此时要注意队尾也有可能有左子树右子树没有进队列
+        LevelOrderTraverse(*F ,visit ,F ,H);//递归
+    else
+        visit((*F)->data);    //输出尾指针
+    return true;
+}
+
+bool SaveADTData(AVLLink *head)
+{
+
+}

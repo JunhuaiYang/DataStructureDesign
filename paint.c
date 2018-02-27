@@ -2,6 +2,7 @@
 
 HANDLE gh_std_out;          /*标准输出设备句柄*/
 DWORD ul; //着色长度
+int Lv;
 
 /**
  * 函数名称: GotoXY
@@ -78,4 +79,59 @@ void DrawBox(SMALL_RECT *pRc)
     pos.X = pRc->Right;
     WriteConsoleOutputCharacter(gh_std_out, &chBox[0], 1, pos, &ul);/*画边框右下角*/
     return;
+}
+
+void PaintTree(AVLtree T)
+{
+    count = 0, Lv = 0;
+    AVLtree queue[100];
+    paint_LevelOrderTraverse(T, queue, queue);
+    getch();
+}
+
+void paint_LevelOrderTraverse(AVLtree T, AVLtree *F,AVLtree *H )
+{
+    if(T == NULL)
+    {
+        tree_print(-1024);
+        return;
+    }
+    *F=T;            //将当前节点放入队列首指针所指位置
+    tree_print((*F)->data.id);
+
+    //if((*F)->lchild != NULL)
+    //{
+        H=H+1;             //头指针后移
+        *H=(*F)->lchild;    //节点的左儿子放入队头
+    //}
+
+
+    //if((*F)->rchild != NULL)
+    //{
+        H=H+1;                //头针向后移动一格
+        *H=(*F)->rchild;    //节点的右儿子放入队头
+   // }
+
+    F=F+1;    //尾指针后移一位
+    //if(F != H || (*F)->lchild != NULL || (*F)->rchild != NULL)   //当队头不等于队尾时递归， 此时要注意队尾也有可能有左子树右子树没有进队列
+        paint_LevelOrderTraverse(*F ,F ,H);//递归
+    //else
+        tree_print((*F)->data.id);    //输出尾指针
+    return;
+}
+
+void tree_print(int i)
+{
+    if(i == -1024)
+        printf(" 000 ");
+    else
+        printf("%d   ", i);
+    if(count == (int)pow(2,Lv)-1)
+    {
+        Lv++ , count = 0;
+        printf("\n");
+    }
+    else
+        count++;
+
 }

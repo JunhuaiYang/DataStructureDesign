@@ -23,7 +23,16 @@ typedef struct AVLNode
     struct AVLNode *lchild,*rchild;    //左右子树
 } AVLNode,*AVLtree;
 
-extern int set_size(AVLtree T);
+typedef struct AVLLink
+{
+    AVLtree tree;  //多树管理
+    char name[10];
+    struct AVLLink *next;
+}AVLLink;
+
+
+extern AVLLink *gp_tree_head;    //全局头结点
+extern int count;  //全局变量count
 
 //6种基本运算
 bool InitAVL(AVLtree *T);
@@ -36,15 +45,15 @@ int GetBlanceFactor(AVLtree tree);
 
 
 
-void set_init(AVLtree *T);
-void set_destory(AVLtree *T);
+AVLLink* set_init(AVLLink **head);
+bool set_destory(AVLLink **head);
 bool set_insert(AVLtree *T,Info e);
 bool set_remove(AVLtree *T,int key);
 void set_intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE);
 void Intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE);
 void set_union(AVLtree T,AVLtree T1, AVLtree *NEWTREE);
 void Union(AVLtree T, AVLtree *newtree);
-void set_difference(AVLtree *T,AVLtree T1, AVLtree *NEWTREE);
+void set_difference(AVLtree T,AVLtree T1, AVLtree *NEWTREE);
 void Difference(AVLtree T,AVLtree T1,AVLtree *NEWTREE);
 int set_size(AVLtree T);
 void Count(Info data);
@@ -52,35 +61,7 @@ bool set_member(AVLtree T,int key);
 bool set_subset(AVLtree TS,AVLtree T1);
 bool Subset(AVLtree TS, AVLtree T1);
 bool set_equal(AVLtree T,AVLtree T1);
-
-//void LeftBalance(AVLtree *T);
-//void RightBalance(AVLtree *T);
-//void L_Rotate(AVLtree *p);
-//void R_Rotate(AVLtree *p);
-//bool load_data(AVLtree *T,char *filename);
-//bool save_data(AVLtree T,FILE *fp);
-//void input_data(Info *data);
-//void create(AVLtree *T);
-//void height(AVLtree T,int i);
-//void graph(AVLtree T,int x,int y,visit fp);
-//void operate_id(AVLtree T);
-//void operate_relation(AVLtree T1,AVLtree T);
-//void operate_hobby(AVLtree T1,AVLtree H);
-//void gotoxy(int x,int y);
-//void menu();
-//bool person_input(AVLtree *T,int p_gross);
-//bool hobby_set_input(AVLtree *H,int *h_gross);
-//void relation_input(AVLtree *T,int p_gross,int h_gross);
-//void id_input(AVLtree *T,int gross,int max,int min);
-
-void PreOrderTraverse(AVLtree T);
-void indirect_friends_traverse(AVLtree T,AVLtree Tf,AVLtree *T0);
-void indirect_friends_insert(AVLtree T,AVLtree *T0);
-void adjust_traverse(AVLtree T);
-void complete_traverse(AVLtree T,AVLtree T0);
-void complete_friends(AVLtree T,AVLtree T1,AVLtree Tf);
-void complete_fans(AVLtree T,AVLtree T1,AVLtree Tf);
-void complete_sttention(AVLtree T,AVLtree T1,AVLtree Tf);
+bool set_AVL(AVLLink *p, int *array, int count);
 
 AVLtree Left_Left_Rotate(AVLtree p);
 AVLtree Right_Right_Rotate(AVLtree p);
@@ -90,8 +71,15 @@ AVLtree Right_Left_Rotate(AVLtree p);
 AVLtree FindMaxNode(AVLtree tree);
 AVLtree FindMinNode(AVLtree tree);
 
+AVLLink* FindAVLLink(AVLLink *head, char* name);
+
 int MAX(int a, int b);
 int Height(AVLtree tree);
 void JustPrintfId(Info data);
+
+bool PreOrderTraverse(AVLtree T,void (*visit)(Info c) );
+bool InOrderTraverse(AVLtree T,void (*visit)(Info c) );
+bool PostOrderTraverse(AVLtree T,void (*visit)(Info c) );
+bool LevelOrderTraverse(AVLtree T,void (*visit)(Info c), AVLtree *F,AVLtree *H );
 
 #endif // AVL_H_INCLUDED
