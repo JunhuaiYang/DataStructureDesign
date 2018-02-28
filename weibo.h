@@ -3,14 +3,15 @@
 
 #include"AVL.h"
 
-typedef struct Info
-{
-    int id;           //用于普通测试或者用于用户ID编号
-    char nickname[20];
-    struct AVLNode *friends;
-    struct AVLNode *fans;
-    struct AVLNode *attentions;
-    struct AVLNode *hobby;
-} Info;
+extern int g_count;
+extern AVLtree gp_all_name;
+
+AVLtree NameInit(AVLtree head, char nickname[20]);
+
+void WriteOneName();
+void LoadName();
+void TraverseAllName();
+void PrintIDName(Info data);
+
 
 #endif // WEIBO_H_INCLUDED

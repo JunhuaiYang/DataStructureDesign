@@ -2,12 +2,12 @@
 
 void menu(void)
 {
-    SMALL_RECT Rec = {2, 2, 90, 15};
+    SMALL_RECT Rec = {2, 1, 90, 15};
 
     printf("\t\t基于AVL树表示的集合ADT实现与应用 演示系统");
     printf("\n\n\n\n\t\t1. 进入基于AVL表示及调用其6种基本运算实现集合ADT的基本运算");
-    printf("\n\n\t\t2. 进入基于集合ADT实现应用层功能");
-    printf("\n\n\t\t3. 数据的储存与读取");
+    printf("\n\n\t\t2. 进入基于AVL表示及调用其6种基本运算实现集合ADT的基本运算");
+    printf("\n\n\t\t3. 进入基于集合ADT实现应用层功能");
     printf("\n\n\t\t0. 退出");
     DrawBox(&Rec);
     GotoXY(2,16);
@@ -36,7 +36,7 @@ void ADT_menu()
     printf("\n                     11. set_subset                12. set_equal");
     printf("\n\n                     13. PreOrderTraverse          14. InOrderTraverse");
     printf("\n                     15. PostOrderTraverse         16. PostOrderTraverse");
-    printf("\n\n                     17. SaveADTData                  18. LoadADTData");
+    printf("\n\n                     17. SaveADTData               18. LoadADTData");
     printf("\n\n                     0.  Back                ");
 
     DrawBox(&Rec);
@@ -555,6 +555,125 @@ void ADT_main(void)
 }
 
 
+void weibo_Menu(void)
+{
+    SMALL_RECT Rec = {2, 1, 90, 20};
+
+    printf("\t\t\t基于集合ADT实现应用层功能");
+
+    printf("\n\n                1. 手动添加用户名                    2. 删除用户集合中的某个用户");
+    printf("\n                3. 添加某一用户的好友                4. 添加某一用户的粉丝");
+    printf("\n                5. 添加某一用户的关注                6. 添加某一用户的个人喜好");
+    printf("\n                7. 删除某一用户的好友                8. 删除某一用户的粉丝");
+    printf("\n                9. 删除某一用户的关注                10. 删除某一用户的个人喜好");
+    printf("\n                11. 查找某一用户                          12. 输出某一用户的所有信息");
+
+    printf("\n\n                13. 共同关注         14. 共同喜好");
+    printf("\n                15. 二度好友           ");
+
+    printf("\n\n                16. 随机生成用户名                        17. 随机生成好友集");
+    printf("\n                18. 随机生成粉丝集                        19. 随机生成关注人集");
+    printf("\n                20. 随机生成个人喜好                    21.输出当前所用用户名     ");
+
+    printf("\n \n                 22. 保存数据                                    23. 加载数据");
+    printf("\n\n                          0.  Back                ");
+
+    DrawBox(&Rec);
+    GotoXY(2,21);
+    printf("请输入要进行的操作：");
+}
+
+void weibo_main(void)
+{
+    int op = 1;
+
+    while(op)
+    {
+        system("cls");
+        weibo_Menu();
+        scanf("%d", &op);
+        switch (op)
+        {
+        case 1:
+            WriteOneName();
+            getch();
+            break;
+
+        case 2:
+            break;
+
+        case 3:
+            break;
+
+        case 4:
+            break;
+
+        case 5:
+            break;
+
+        case 6:
+            break;
+
+        case 7:
+            break;
+
+        case 8:
+            break;
+
+        case 9:
+            break;
+
+        case 10:
+            break;
+
+        case 11:
+            break;
+
+        case 12:
+            break;
+
+        case 13:
+            break;
+
+        case 14:
+            break;
+
+        case 15:
+            break;
+
+        case 16:
+            break;
+
+        case 17:
+            break;
+
+        case 18:
+            break;
+
+        case 19:
+            break;
+
+        case 20:
+            break;
+
+        case 21:
+            break;
+
+        case 22:
+            TraverseAllName();
+            getch();
+            break;
+
+        case 23:
+            LoadName();
+            getch();
+            break;
 
 
+        default:
+            break;
+        }
+
+    }
+}
 

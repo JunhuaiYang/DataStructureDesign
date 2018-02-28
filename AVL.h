@@ -8,12 +8,17 @@
 #include<conio.h>
 #include<stdbool.h>
 
-#include"weibo.h"
+//#include"weibo.h"
 
-#define LH 1   //左高
-#define EH 0   //平衡
-#define RH -1  //右高
-
+typedef struct Info
+{
+    int id;           //用于普通测试或者用于用户ID编号
+    char nickname[20];
+    struct AVLNode *friends;
+    struct AVLNode *fans;
+    struct AVLNode *attentions;
+    struct AVLNode *hobby;
+}Info;
 
 typedef struct AVLNode
 {
@@ -21,7 +26,7 @@ typedef struct AVLNode
     int bf;       //平衡因子
     int height;   //高度
     struct AVLNode *lchild,*rchild;    //左右子树
-} AVLNode,*AVLtree;
+} AVLNode, *AVLtree;
 
 typedef struct AVLLink
 {

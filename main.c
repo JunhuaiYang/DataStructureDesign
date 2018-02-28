@@ -14,13 +14,15 @@ int main()
         switch (op)
         {
         case 1:   //ADT_menu
-            ADT_main();
+
             break;
 
         case 2:
+            ADT_main();
             break;
 
         case 3:
+            weibo_main();
             break;
 
         default:
