@@ -2,11 +2,11 @@
 1514140574 source:e:\study\project\datastructuredesign\main.cpp
 	<iostream>
 
-1519816291 source:e:\study\project\datastructuredesign\main.c
+1519901819 source:e:\study\project\datastructuredesign\main.c
 	"AVL.h"
 	"menu.h"
 
-1519816126 e:\study\project\datastructuredesign\avl.h
+1519897088 e:\study\project\datastructuredesign\avl.h
 	<stdio.h>
 	<malloc.h>
 	<stdlib.h>
@@ -14,17 +14,18 @@
 	<conio.h>
 	<stdbool.h>
 
-1519816019 e:\study\project\datastructuredesign\weibo.h
+1519895604 e:\study\project\datastructuredesign\weibo.h
+	"AVL.h"
+	<time.h>
+
+1519896597 source:e:\study\project\datastructuredesign\avl.c
 	"AVL.h"
 
-1519737459 source:e:\study\project\datastructuredesign\avl.c
-	"AVL.h"
-
-1519815422 source:e:\study\project\datastructuredesign\weibo.c
+1519904202 source:e:\study\project\datastructuredesign\weibo.c
 	"AVL.h"
 	"weibo.h"
 
-1519815268 source:e:\study\project\datastructuredesign\menu.c
+1519903381 source:e:\study\project\datastructuredesign\menu.c
 	"menu.h"
 
 1519816104 e:\study\project\datastructuredesign\menu.h
@@ -32,7 +33,7 @@
 	"paint.h"
 	"weibo.h"
 
-1519725497 e:\study\project\datastructuredesign\paint.h
+1519902240 e:\study\project\datastructuredesign\paint.h
 	"AVL.h"
 	<windows.h>
 	<wincon.h>
@@ -40,6 +41,6 @@
 	<io.h>
 	<math.h>
 
-1519725497 source:e:\study\project\datastructuredesign\paint.c
+1519902142 source:e:\study\project\datastructuredesign\paint.c
 	"paint.h"
 

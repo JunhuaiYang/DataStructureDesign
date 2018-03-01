@@ -20,6 +20,7 @@ void GotoXY(int x, int y)
     SetConsoleCursorPosition(gh_std_out, pos);
 }
 
+
 /**
  * 函数名称:Show_Cursor
  * 函数功能: 显示或隐藏控制台光标.
@@ -80,3 +81,7 @@ void DrawBox(SMALL_RECT *pRc)
     return;
 }
 
+bool SetConsoleColor(WORD wAttributes)
+{
+    return SetConsoleTextAttribute(gh_std_out, wAttributes);
+}

@@ -4,13 +4,16 @@ void menu(void)
 {
     SMALL_RECT Rec = {2, 1, 90, 15};
 
-    printf("\t\t基于AVL树表示的集合ADT实现与应用 演示系统");
+
+    SetConsoleColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);   //蓝色前景
+    printf("\t\t\t基于AVL树表示的集合ADT实现与应用 演示系统");
+    SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);   //黄色前景和灰色背景
     printf("\n\n\n\n\t\t1. 进入基于AVL表示及调用其6种基本运算实现集合ADT的基本运算");
-    printf("\n\n\t\t2. 进入基于AVL表示及调用其6种基本运算实现集合ADT的基本运算");
-    printf("\n\n\t\t3. 进入基于集合ADT实现应用层功能");
+    printf("\n\n\t\t2. 进入基于集合ADT实现应用层功能");
     printf("\n\n\t\t0. 退出");
     DrawBox(&Rec);
     GotoXY(2,16);
+    SetConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);   //恢复
     printf("请输入要进行的操作：");
 }
 
@@ -26,7 +29,9 @@ void ADT_menu()
         n++;
         p = p->next;
     }
+    SetConsoleColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);   //蓝色前景
     printf("\t\t基于AVL表示及调用其6种基本运算实现集合ADT的基本运算");
+    SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);   //黄色前景和灰色背景
     printf("\n\n\t当前存在%d棵AVL树：", n);
     printf("\n                     1. set_init                   2. set_destroy");
     printf("\n                     3. set_AVL                    4. set_insert");
@@ -41,8 +46,40 @@ void ADT_menu()
 
     DrawBox(&Rec);
     GotoXY(2,21);
+    SetConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);   //恢复
     printf("请输入要进行的操作：");
 }
+
+void weibo_Menu(void)
+{
+    SMALL_RECT Rec = {2, 1, 90, 20};
+
+    SetConsoleColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);   //蓝色前景
+    printf("\t\t\t基于集合ADT实现应用层功能");
+
+    SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);   //黄色前景和灰色背景
+    printf("\n\n                1. 手动添加用户名                    2. 删除用户集合中的某个用户");
+    printf("\n                3. 添加某一用户的好友                4. 添加某一用户的粉丝");
+    printf("\n                5. 添加某一用户的关注                6. 添加某一用户的个人喜好");
+    printf("\n                7. 删除某一用户的好友                8. 删除某一用户的粉丝");
+    printf("\n                9. 删除某一用户的关注                10. 删除某一用户的个人喜好");
+    printf("\n                11. 查找某一用户                     12. 输出某一用户的所有信息");
+
+    printf("\n\n                13. 共同关注                          14. 共同喜好");
+    printf("\n                15. 二度好友           ");
+
+    printf("\n\n                16. 随机生成用户名                   17. 随机生成其余所有数据");
+    printf("\n                18. 输出当前所用用户名              ");
+
+    printf("\n \n                 19. 保存数据                             20. 加载数据");
+    printf("\n\n                 0.  Back                ");
+
+    DrawBox(&Rec);
+    GotoXY(2,21);
+    SetConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);   //恢复
+    printf("请输入要进行的操作：");
+}
+
 
 void ADT_main(void)
 {
@@ -555,33 +592,6 @@ void ADT_main(void)
 }
 
 
-void weibo_Menu(void)
-{
-    SMALL_RECT Rec = {2, 1, 90, 20};
-
-    printf("\t\t\t基于集合ADT实现应用层功能");
-
-    printf("\n\n                1. 手动添加用户名                    2. 删除用户集合中的某个用户");
-    printf("\n                3. 添加某一用户的好友                4. 添加某一用户的粉丝");
-    printf("\n                5. 添加某一用户的关注                6. 添加某一用户的个人喜好");
-    printf("\n                7. 删除某一用户的好友                8. 删除某一用户的粉丝");
-    printf("\n                9. 删除某一用户的关注                10. 删除某一用户的个人喜好");
-    printf("\n                11. 查找某一用户                          12. 输出某一用户的所有信息");
-
-    printf("\n\n                13. 共同关注         14. 共同喜好");
-    printf("\n                15. 二度好友           ");
-
-    printf("\n\n                16. 随机生成用户名                        17. 随机生成好友集");
-    printf("\n                18. 随机生成粉丝集                        19. 随机生成关注人集");
-    printf("\n                20. 随机生成个人喜好                    21.输出当前所用用户名     ");
-
-    printf("\n \n                 22. 保存数据                                    23. 加载数据");
-    printf("\n\n                          0.  Back                ");
-
-    DrawBox(&Rec);
-    GotoXY(2,21);
-    printf("请输入要进行的操作：");
-}
 
 void weibo_main(void)
 {
@@ -594,86 +604,174 @@ void weibo_main(void)
         scanf("%d", &op);
         switch (op)
         {
-        case 1:
+        case 1:  //手动添加用户名
             WriteOneName();
             getch();
             break;
 
-        case 2:
+        case 2:  //删除用户集合中的某个用户
+            DeleteUser();
+            getch();
             break;
 
-        case 3:
+        case 3://添加某一用户的好友
+            AddOnesFriend();
+            getch();
             break;
 
-        case 4:
+        case 4://添加某一用户的粉丝
+            AddOnesFans();
+            getch();
             break;
 
-        case 5:
+        case 5://添加某一用户的关注
+            AddOnesAtt();
+            getch();
             break;
 
-        case 6:
+        case 6://添加某一用户的个人喜好
+            AddOnesHobby();
+            getch();
             break;
 
-        case 7:
+        case 7://删除某一用户的好友
+            DeleteOneFriend();
+            getch();
             break;
 
-        case 8:
+        case 8://删除某一用户的粉丝
+            DeleteOneFans();
+            getch();
             break;
 
-        case 9:
+        case 9://删除某一用户的关注
+            DeleteOneAtt();
+            getch();
             break;
 
-        case 10:
+        case 10://删除某一用户的个人喜好
+            DeleteOneHobby();
+            getch();
             break;
 
-        case 11:
+        case 11://查找某一用户
+            PutOneInfo();
+            getch();
             break;
 
-        case 12:
+        case 12://输出某一用户的所有信息
+            PutOneInfo();
+            getch();
             break;
 
-        case 13:
+        case 13://共同关注
+            SameAtt();
+            getch();
             break;
 
-        case 14:
+        case 14://共同喜好
+            SameHobby();
+            getch();
             break;
 
-        case 15:
+        case 15://二度好友
+            TwoFriend();
+            getch();
             break;
 
-        case 16:
+        case 16://随机生成用户名
+            RandName();
+            getch();
             break;
 
-        case 17:
+        case 17://随机生成所有信息
+            RandAllInfo(gp_all_name);
+            getch();
             break;
 
-        case 18:
-            break;
-
-        case 19:
-            break;
-
-        case 20:
-            break;
-
-        case 21:
-            break;
-
-        case 22:
+        case 18://输出当前所用用户名
             TraverseAllName();
             getch();
             break;
 
-        case 23:
+        case 19://保存数据
+            SaveName();
+            SaveInfo();
+            getch();
+            break;
+
+        case 20://加载数据
             LoadName();
+            LoadInfo();
             getch();
             break;
 
 
-        default:
+        default://Back
             break;
         }
 
     }
 }
+
+//void first_menu()
+//{
+//    SMALL_RECT Rec = {2, 1, 90, 20};
+//    AVLtree p= NULL;
+//    int op = 1;
+//
+//    while(op)
+//    {
+//        system("cls");
+//        printf("\t\t基于AVL表示及调用其6种基本运算实现集合ADT的基本运算");
+//        if(p)
+//            printf("\n\n\t当前存在树");
+//        else
+//            printf("\n当前不存在树");
+//
+//        printf("\n                     1. InitAVL                   2. DestroyAVL");
+//        printf("\n                     3. SearchAVL                 4. InsertAVL");
+//        printf("\n                     5. DeleteAVL                 6. TraverseAVL");
+//
+//        printf("\n\n                     0.  Back                ");
+//
+//        DrawBox(&Rec);
+//        GotoXY(2,21);
+//        printf("请输入要进行的操作：");
+//        scanf("%d", &op);
+//
+//        switch (op)
+//        {
+//        case 1:
+//            if (p != NULL)
+//            {
+//                printf("\n当前树已经初始化！");
+//            }
+//            else
+//            {
+//                if(Init)
+//            }
+//            break;
+//
+//        case 2:
+//            break;
+//
+//        case 3:
+//            break;
+//
+//        case 4:
+//            break;
+//
+//        case 5:
+//            break;
+//
+//        case 6:
+//            break;
+//
+//        default:
+//            break;
+//        }
+//    }
+//}
+
 

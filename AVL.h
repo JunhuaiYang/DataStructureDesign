@@ -23,7 +23,6 @@ typedef struct Info
 typedef struct AVLNode
 {
     Info data;    //保存信息
-    int bf;       //平衡因子
     int height;   //高度
     struct AVLNode *lchild,*rchild;    //左右子树
 } AVLNode, *AVLtree;
@@ -90,5 +89,7 @@ bool LevelOrderTraverse(AVLtree T,void (*visit)(Info c), AVLtree *F,AVLtree *H )
 bool SaveADTData(AVLLink *head);
 bool SaveInOrderTraverse(AVLtree T,FILE *fp);
 bool LoadADTData(AVLLink **head);
+
+void Exit(void);  //退出时清空所有树
 
 #endif // AVL_H_INCLUDED

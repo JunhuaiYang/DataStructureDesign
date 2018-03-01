@@ -15,5 +15,6 @@ DWORD ul;
 void GotoXY(int x, int y);
 void Show_Cursor(BOOL boo);
 void DrawBox(SMALL_RECT *pRc);
+bool SetConsoleColor(WORD wAttributes);
 
 #endif // PAINT_H_INCLUDED

@@ -21,9 +21,11 @@ bool DestroyAVL(AVLtree *T)
     int top = -1;
 
     Tnode = *T;
+    if(Tnode == NULL)
+        return true;
     p = Tnode->lchild;
     q = Tnode->rchild;
-    if (p == NULL && q == NULL)  //只有根节点
+    if (p == NULL || q == NULL)  //只有根节点
     {
         free(Tnode);
         return true;
@@ -87,11 +89,9 @@ AVLtree InsertAVL(AVLtree newtree,Info key)
         }
     }
     else  //key->id == newtree->data->id
-        printf("节点相同，添加失败！\n");
+        printf("\n节点相同，添加失败！ \n");
     //更新节点高度信息
     newtree->height = MAX(Height(newtree->lchild), Height(newtree->rchild)) + 1;
-    //更新节点平衡因子信息
-    newtree->bf = GetBlanceFactor(newtree);
 
     return newtree;
 }
@@ -391,10 +391,7 @@ bool set_remove(AVLtree *T,int key)
 void set_intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 {
     //如果NEWTREE存在的话，将其销毁
-    if(*NEWTREE)
-    {
-        DestroyAVL(NEWTREE);
-    }
+    *NEWTREE = NULL;
 
     Intersection(T, T1, NEWTREE);   //递归实现
 
@@ -416,10 +413,8 @@ void Intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 void set_union(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 {
     //如果NEWTREE存在的话，将其销毁
-    if(*NEWTREE)
-    {
-        DestroyAVL(NEWTREE);
-    }
+    *NEWTREE = NULL;
+
     if(T)  //现将T放入新树
         Union(T, NEWTREE);
     if(T1)  //再将T1放入新树
@@ -444,10 +439,8 @@ void Union(AVLtree T, AVLtree *newtree)
 void set_difference(AVLtree T,AVLtree T1, AVLtree *NEWTREE)
 {
     //如果NEWTREE存在的话，将其销毁
-    if(*NEWTREE)
-    {
-        DestroyAVL(NEWTREE);
-    }
+    *NEWTREE = NULL;
+
     Difference(T, T1, NEWTREE);
 }
 
@@ -633,7 +626,7 @@ bool SaveADTData(AVLLink *head)
             SaveInOrderTraverse(p->tree, fp);
             fprintf(fp,"\n");
         }
-        fclose(fp);
+        fclose(fp);   //关闭文件
         printf("\n文件保存成功！");
         getch();
         return true;
@@ -683,7 +676,7 @@ bool LoadADTData(AVLLink **head)
 
         fscanf(fp, "%d", &length);  //读取长度
 
-        for(i=0; i<length; i++)
+        for(i=0; i<length; i++)  //读取每一条信息
         {
             fscanf(fp,"%s %d", (p)->name, &c);
             for(j=0; j<c; j++)
@@ -703,6 +696,7 @@ bool LoadADTData(AVLLink **head)
                 (p)->tree = NULL;
             }
         }
+        fclose(fp); //关闭文件
         printf("文件读取成功！");
         getch();
         return true;
