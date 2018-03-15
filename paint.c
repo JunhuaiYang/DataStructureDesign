@@ -1,3 +1,6 @@
+/** \brief 该文件用于保存交互界面相关函数
+ *
+ */
 #include"paint.h"
 
 HANDLE gh_std_out;          /*标准输出设备句柄*/
@@ -81,6 +84,15 @@ void DrawBox(SMALL_RECT *pRc)
     return;
 }
 
+/**
+ * 函数名称: SetConsoleColor
+ * 函数功能: 控制台着色.
+ * 输入参数: WORD wAttributes 颜色信息
+ * 输出参数: 无
+ * 返 回 值: 无
+ *
+ * 调用说明:
+ */
 bool SetConsoleColor(WORD wAttributes)
 {
     return SetConsoleTextAttribute(gh_std_out, wAttributes);

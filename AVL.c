@@ -1,9 +1,22 @@
+/** \brief 该文件用于保存AVL6种基本运算以及ADT应用函数
+ *
+ *
+ */
 #include"AVL.h"
 
 int count;  //全局变量count
 AVLLink *gp_tree_head;    //全局头结点
 
 //6种基本运算
+
+/** \brief InitAVL 初始化树节点
+ *
+ * \param AVLtree *T 用于返回初始化完成的节点
+ * \param
+ * \return bool 新建成功返回真
+ *
+ */
+
 bool InitAVL(AVLtree *T)
 {
     *T = (AVLNode*) malloc(sizeof(AVLNode));
@@ -14,6 +27,14 @@ bool InitAVL(AVLtree *T)
     (*T) ->rchild = NULL;
     return true;
 }
+
+/** \brief DestroyAVL 销毁树  释放每一个节点的储存空间
+ *              防止内存泄漏
+ * \param
+ * \param AVLtree *T
+ * \return bool
+ *
+ */
 
 bool DestroyAVL(AVLtree *T)
 {
@@ -47,9 +68,17 @@ bool DestroyAVL(AVLtree *T)
     return true ;
 }
 
+
+/** \brief SearchAVL  搜索是否存在节点
+ *             若存在，返回其指针，若不存在，返回空
+ * \param int key
+ * \param AVLtree head
+ * \return AVLtree
+ *
+ */
 AVLtree SearchAVL(AVLtree head, int key)
 {
-    if(head != NULL)
+    if(head != NULL)  //头不为空
     {
         if(key == head->data.id) return head;     //找到返回
         else if(key < head->data.id) return SearchAVL(head->lchild, key);    //左小
@@ -58,6 +87,14 @@ AVLtree SearchAVL(AVLtree head, int key)
     return NULL;
 }
 
+
+/** \brief InsertAVL 插入节点，并且维持二叉树的平衡
+ *
+ * \param AVLtree newtree
+ * \param Info key
+ * \return AVLtree
+ *
+ */
 AVLtree InsertAVL(AVLtree newtree,Info key)
 {
     if(newtree == NULL)
@@ -77,7 +114,7 @@ AVLtree InsertAVL(AVLtree newtree,Info key)
                 newtree = Left_Right_Rotate(newtree);
         }
     }
-    else if(key.id > newtree->data.id)
+    else if(key.id > newtree->data.id)  //插到右子树
     {
         newtree->rchild = InsertAVL(newtree->rchild, key);   //递归
         if (Height(newtree->rchild) - Height(newtree->lchild) == 2) //右
@@ -96,6 +133,13 @@ AVLtree InsertAVL(AVLtree newtree,Info key)
     return newtree;
 }
 
+/** \brief DeleteAVL 删除子树，并维持二叉树平衡
+ *
+ * \param AVLtree tree
+ * \param AVLNode *z
+ * \return AVLtree
+ *
+ */
 AVLtree DeleteAVL(AVLtree tree, AVLNode *z)
 {
     // 根为空 或者 没有要删除的节点，直接返回NULL。
@@ -163,6 +207,13 @@ AVLtree DeleteAVL(AVLtree tree, AVLNode *z)
     return tree; //返回根
 }
 
+/** \brief TraverseAVL 中序遍历二叉树
+ *
+ * \param AVLtree p
+ * \param void (*visit)(Info data)
+ * \return
+ *
+ */
 void TraverseAVL(AVLtree p, void (*visit)(Info data))
 {
     if(p == NULL) return;
@@ -174,11 +225,24 @@ void TraverseAVL(AVLtree p, void (*visit)(Info data))
     return ;
 }
 
+/** \brief 获得平衡因子
+ *
+ * \param  AVLtree tree
+ * \param
+ * \return
+ *
+ */
+
 int GetBlanceFactor(AVLtree tree)
 {
     return Height(tree->lchild) - Height(tree->rchild);  //获得平衡因子
 }
 
+
+/** \brief LL情况，一次左旋
+ *
+ *
+ */
 
 AVLtree Left_Left_Rotate(AVLtree p)  //LL情况，右旋
 {
@@ -194,6 +258,10 @@ AVLtree Left_Left_Rotate(AVLtree p)  //LL情况，右旋
     return lc; //返回根节点
 }
 
+/** \brief RR情况 ， 一次左旋
+ *
+ *
+ */
 AVLtree Right_Right_Rotate(AVLtree p)
 {
     AVLtree rc;
@@ -208,23 +276,39 @@ AVLtree Right_Right_Rotate(AVLtree p)
     return rc;
 }
 
+/** \brief  LR情况 先左旋后右旋
+ *
+ *
+ */
 AVLtree Left_Right_Rotate(AVLtree p)
 {
     p->lchild = Right_Right_Rotate(p->lchild);  //先对p的左儿子左旋
     return Left_Left_Rotate(p);   //再进行右旋，直接返回
 }
 
+/** \brief  RL情况，先右旋后左旋
+ *
+ *
+ */
 AVLtree Right_Left_Rotate(AVLtree p)
 {
     p->rchild = Left_Left_Rotate(p->rchild);  //先对p的右儿子右旋
     return Right_Right_Rotate(p);  //再左旋
 }
 
+/** \brief 返回a，b的最大值
+ *
+ *
+ */
 int MAX(int a, int b)
 {
     return (a>b) ? a : b;
 }
 
+/** \brief  返回树的高度
+ *
+ *
+ */
 int Height(AVLtree tree)
 {
     if (tree == NULL)
@@ -232,6 +316,10 @@ int Height(AVLtree tree)
     else return tree->height;
 }
 
+/** \brief  找tree树的最大节点，也就是最右的子树
+ *
+ *
+ */
 AVLtree FindMaxNode(AVLtree tree)
 {
     if(tree->rchild == NULL)
@@ -240,6 +328,10 @@ AVLtree FindMaxNode(AVLtree tree)
         return FindMaxNode(tree->rchild);
 }
 
+/** \brief  找tree树的最小节点，也就是最左的子树
+ *
+ *
+ */
 AVLtree FindMinNode(AVLtree tree)
 {
     if(tree->lchild == NULL)
@@ -248,19 +340,22 @@ AVLtree FindMinNode(AVLtree tree)
         return FindMinNode(tree->lchild);
 }
 
+/** \brief  输出ID
+ *
+ *
+ */
 void JustPrintfId(Info data)
 {
     printf("%d  ",data.id); //中序遍历输出
     return;     //返回0匹配接口
 }
 
-Info GetTraverseInfo(Info data)
-{
-    return data;          //直接返回Info
-}
-
 
 //ADT基本运算
+/** \brief  初始化 以及多树管理
+ *
+ *
+ */
 AVLLink* set_init(AVLLink **head)
 {
     AVLLink *p;
@@ -289,6 +384,10 @@ AVLLink* set_init(AVLLink **head)
     return p;
 }
 
+/** \brief  销毁树， 可以选择要销毁的树
+ *
+ *
+ */
 bool set_destory(AVLLink **head)
 {
     AVLLink *p = *head, *temp = NULL;
@@ -340,6 +439,10 @@ bool set_destory(AVLLink **head)
 
 }
 
+/** \brief  插入数组进入树中
+ *
+ *
+ */
 bool set_AVL(AVLLink *p, int *array, int count)
 {
     Info temp;
@@ -347,11 +450,15 @@ bool set_AVL(AVLLink *p, int *array, int count)
     for(i=0; i<count; i++)    //循环将数组插入到其中
     {
         temp.id = array[i];
-        p->tree = InsertAVL(p->tree, temp);
+        p->tree = InsertAVL(p->tree, temp);  //调用6种基本运算之一的插入元素
     }
     return true;
 }
 
+/** \brief  插入一个元素
+ *
+ *
+ */
 bool set_insert(AVLtree *T,Info e)
 {
     if(*T == NULL)
@@ -361,11 +468,15 @@ bool set_insert(AVLtree *T,Info e)
     }
     else
     {
-        *T = InsertAVL(*T, e);
+        *T = InsertAVL(*T, e);  //调用6种基本运算之一的插入元素
         return true;
     }
 }
 
+/** \brief  删除某一节点
+ *
+ *
+ */
 bool set_remove(AVLtree *T,int key)
 {
     AVLNode* tnode; //查找要删除的节点
@@ -380,7 +491,7 @@ bool set_remove(AVLtree *T,int key)
         tnode = SearchAVL(*T, key);
         if(tnode != NULL)
         {
-            *T = DeleteAVL(*T, tnode);  //调用删除, 并将根返回
+            *T = DeleteAVL(*T, tnode);  //调用6种基本运算删除, 并将根返回
             return true;
         }
         else
@@ -388,6 +499,10 @@ bool set_remove(AVLtree *T,int key)
     }
 }
 
+/** \brief  取交集
+ *
+ *
+ */
 void set_intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 {
     //如果NEWTREE存在的话，将其销毁
@@ -398,6 +513,10 @@ void set_intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
     return;
 }
 
+/** \brief  用中序遍历取交集
+ *
+ *
+ */
 void Intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 {
     if(T == NULL) return;  //遍历T
@@ -410,6 +529,10 @@ void Intersection(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
     return;
 }
 
+/** \brief  取并集
+ *
+ *
+ */
 void set_union(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 {
     //如果NEWTREE存在的话，将其销毁
@@ -424,6 +547,10 @@ void set_union(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 
 }
 
+/** \brief  用中序遍历取并集
+ *
+ *
+ */
 void Union(AVLtree T, AVLtree *newtree)
 {
     if(T == NULL) return;
@@ -436,6 +563,10 @@ void Union(AVLtree T, AVLtree *newtree)
 }
 
 
+/** \brief  取差集
+ *          该差集为T-T1的差集
+ *
+ */
 void set_difference(AVLtree T,AVLtree T1, AVLtree *NEWTREE)
 {
     //如果NEWTREE存在的话，将其销毁
@@ -444,6 +575,10 @@ void set_difference(AVLtree T,AVLtree T1, AVLtree *NEWTREE)
     Difference(T, T1, NEWTREE);
 }
 
+/** \brief  用中序遍历取差集
+ *
+ *
+ */
 void Difference(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
 {
     if(T == NULL) return;  //遍历T
@@ -456,6 +591,10 @@ void Difference(AVLtree T,AVLtree T1,AVLtree *NEWTREE)
     return;
 }
 
+/** \brief  返回该树的大小
+ *
+ *
+ */
 int set_size(AVLtree T)
 {
     count = 0;     //将count置零
@@ -464,11 +603,16 @@ int set_size(AVLtree T)
     return count;
 }
 
+//用于计数
 void Count(Info data)
 {
     count++;
 }
 
+/** \brief  查找某一成员是否在该树中
+ *
+ *
+ */
 bool set_member(AVLtree T,int key)
 {
     if(SearchAVL(T, key))  //直接调用
@@ -477,11 +621,19 @@ bool set_member(AVLtree T,int key)
         return false;
 }
 
+/** \brief  看是否是子集
+ *
+ *
+ */
 bool set_subset(AVLtree TS,AVLtree T1)
 {
     return Subset(TS, T1);
 }
 
+/** \brief  看TS 是否为T1子集
+ *          用中序遍历来实现
+ *
+ */
 bool Subset(AVLtree TS, AVLtree T1) //TS 是否为T1子集
 {
     if(TS == NULL)
@@ -501,6 +653,10 @@ bool Subset(AVLtree TS, AVLtree T1) //TS 是否为T1子集
         return false;
 }
 
+/** \brief  看T是否跟T!相等
+ *          如果T1和T互为子集，那么他们就相等
+ *
+ */
 bool set_equal(AVLtree T,AVLtree T1)
 {
     //判断相等即判断其是否互为子集
@@ -510,7 +666,7 @@ bool set_equal(AVLtree T,AVLtree T1)
         return false;
 }
 
-
+//找多树管理链表的节点
 AVLLink* FindAVLLink(AVLLink *head, char* name)
 {
     AVLLink *p = head;
@@ -600,6 +756,10 @@ bool LevelOrderTraverse(AVLtree T,void (*visit)(Info c), AVLtree *F,AVLtree *H )
     return true;
 }
 
+/** \brief  保存数据
+ *
+ *
+ */
 bool SaveADTData(AVLLink *head)
 {
     if(head == NULL)   //先判断
@@ -638,6 +798,7 @@ bool SaveADTData(AVLLink *head)
     }
 }
 
+//用于保存数据的遍历
 bool SaveInOrderTraverse(AVLtree T,FILE *fp)
 {
     if(T == NULL) return false;
@@ -649,6 +810,10 @@ bool SaveInOrderTraverse(AVLtree T,FILE *fp)
     return true;
 }
 
+/** \brief  读取数据
+ *
+ *
+ */
 bool LoadADTData(AVLLink **head)
 {
     FILE *fp = fopen("AVLtree.dat","r");   //只读的方式打开文件

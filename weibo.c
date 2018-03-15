@@ -1,6 +1,12 @@
+/** \brief 该文件用于保存第三层二叉树应用的相关函数
+ *
+ *
+ */
+
 #include"AVL.h"
 #include"weibo.h"
 
+//全局变量
 int g_count;
 int g_i;
 AVLtree gp_all_name;
@@ -10,6 +16,14 @@ int GetRand(int n) //生成n以内的伪随机数
     return rand()%n+1;
 }
 
+
+/** \brief  NameInit 用于名字的初始化，后面可以调用
+ *
+ * \param AVLtree head
+ * \param char nickname[20]
+ * \return AVLtree 返回插入成功的头结点
+ *
+ */
 AVLtree NameInit(AVLtree head, char nickname[20])
 {
     Info data;
@@ -23,7 +37,13 @@ AVLtree NameInit(AVLtree head, char nickname[20])
     return InsertAVL(head, data);
 }
 
-
+/** \brief WriteOneName 录入一个用户名 调用NameInit
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void WriteOneName(void)
 {
     char name[20];
@@ -35,7 +55,13 @@ void WriteOneName(void)
         printf("\n用户加入集合成功！\n当前用户编号：%d",g_count);
 }
 
-
+/** \brief TraverseAllName遍历当前录入的所有用户名
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void TraverseAllName(void)
 {
     printf("当前录入的所有用户名为：");
@@ -43,6 +69,13 @@ void TraverseAllName(void)
     TraverseAVL(gp_all_name, PrintIDName);
 }
 
+/** \brief PrintIDName输出当前用户名的ID和用户名
+ *              主要使其他函数调用该函数 全局变量来控制格式
+ * \param
+ * \param Info data
+ * \return
+ *
+ */
 void PrintIDName(Info data)
 {
     if(++g_i % 5 == 1)
@@ -50,6 +83,13 @@ void PrintIDName(Info data)
     printf("%-5d%-15s",data.id,data.nickname);
 }
 
+/** \brief PrintName只输出名字
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void PrintName(Info data)
 {
     if(++g_i % 7 == 1)
@@ -57,6 +97,13 @@ void PrintName(Info data)
     printf("%-15s",data.nickname);
 }
 
+/** \brief  PutOneInfo(void) 查找一个用户的所有信息
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void PutOneInfo(void)
 {
     int id;
@@ -87,6 +134,13 @@ void PutOneInfo(void)
     }
 }
 
+/** \brief DeleteUser删除一个用户
+ *          删除一个用户，并删除与之相关的所有信息，并释放与之相关的所有储存空间
+ * \param
+ * \param
+ * \return
+ *
+ */
 void DeleteUser(void)
 {
     int id;
@@ -98,7 +152,7 @@ void DeleteUser(void)
     temp = SearchAVL(gp_all_name, id);  //搜索该用户
     if (temp)
     {
-        printf("\n该用户的信息为:");
+        printf("\n该用户的信息为:");  //先输出该用户信息
         printf("\n该用户的ID为：%-5d该用户昵称为：%s",temp->data.id, temp->data.nickname);
         printf("\n\n该用户的好友有：");
         g_i = 0;     //把遍历的整数置零
@@ -112,7 +166,7 @@ void DeleteUser(void)
         printf("\n\n该用户的个人喜好有：");
         g_i = 0;     //把遍历的整数置零
         TraverseAVL(temp->data.hobby, PrintName);
-        printf("\n\n是否删除？是请按Y，否则按任意键\n");
+        printf("\n\n是否删除？是请按Y，否则按任意键\n");  //确认是否删除
         scanf(" %c",&key);
         if(key == 'Y' || key == 'y')
         {
@@ -127,6 +181,13 @@ void DeleteUser(void)
     }
 }
 
+/** \brief AddOnesFriend 添加某一用户好友，同时目标用户好友用也会出现该用户
+ *          即双向添加好友
+ * \param
+ * \param
+ * \return
+ *
+ */
 void AddOnesFriend(void)
 {
     int id;
@@ -157,6 +218,13 @@ void AddOnesFriend(void)
     }
 }
 
+/** \brief AddOnesFans添加粉丝，目标用户关注中出现该用户
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void AddOnesFans(void)
 {
     int id;
@@ -187,6 +255,13 @@ void AddOnesFans(void)
     }
 }
 
+/** \brief AddOnesAtt添加关注，目标用户粉丝中出现该用户
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void AddOnesAtt(void)
 {
     int id;
@@ -217,6 +292,13 @@ void AddOnesAtt(void)
     }
 }
 
+/** \brief AddOnesHobby添加个人喜好
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void AddOnesHobby(void)
 {
     int id;
@@ -240,6 +322,13 @@ void AddOnesHobby(void)
     }
 }
 
+/** \brief DeleteOneFriend删除一个用户的好友
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void DeleteOneFriend(void)
 {
     int id;
@@ -278,7 +367,13 @@ void DeleteOneFriend(void)
     }
 }
 
-
+/** \brief DeleteOneFans删除一个用户的粉丝，同时对方也会从关注中删除
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void DeleteOneFans(void)
 {
     int id;
@@ -327,6 +422,13 @@ void DeleteOneFans(void)
     }
 }
 
+/** \brief DeleteOneAtt删除一个用户的关注
+ *          同时对方也会从粉丝中删除
+ * \param
+ * \param
+ * \return
+ *
+ */
 void DeleteOneAtt(void)
 {
     int id;
@@ -375,6 +477,13 @@ void DeleteOneAtt(void)
     }
 }
 
+/** \brief DeleteOneHobby删除一个用户的个人喜好
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void DeleteOneHobby(void)
 {
     int id;
@@ -413,6 +522,13 @@ void DeleteOneHobby(void)
     }
 }
 
+/** \brief RandName随机生成名字
+ *          通过320个汉字字库，随机生成长度2-5的中文用户名
+ * \param
+ * \param
+ * \return
+ *
+ */
 void RandName(void)
 {
     char *chinese[] = {"乙","乃","了","力","丁","刀","刁","二","又","人","入","七","十","几",
@@ -460,6 +576,16 @@ void RandName(void)
 
 }
 
+/** \brief RandOneInfo随机生成所有信息
+ *      其中朋友、粉丝、关注直接通过随机函数随机ID生成
+ *      同时朋友间互为好友，粉丝与关注，关注跟粉丝有关系
+ *      随机生成的条数在MAX_RAND下
+ *          爱好在10条以内随机生成
+ * \param
+ * \param AVLtree tree
+ * \return
+ *
+ */
 void RandOneInfo(AVLtree tree)
 {
     int ra_num, i, ra_id;
@@ -503,7 +629,7 @@ void RandOneInfo(AVLtree tree)
             ra_id = GetRand(g_count);  //在目前所有信息条数下
             temp = SearchAVL(gp_all_name, ra_id);
             tree->data.fans = InsertAVL(tree->data.fans, temp->data);  //将找到的数据存入
-            temp->data.attentions = InsertAVL(tree->data.attentions, temp->data);   //粉丝生成关注
+            temp->data.attentions = InsertAVL(temp->data.attentions, tree->data);   //粉丝生成关注
             printf("\n当前生成：%s  的第%d位粉丝 %s  !",tree->data.nickname ,i+1, temp->data.nickname);
         }
     }
@@ -521,6 +647,13 @@ void RandOneInfo(AVLtree tree)
     }
 }
 
+/** \brief RandAllInfo遍历所有节点，依次生成每一条信息
+ *
+ * \param
+ * \param AVLtree tree
+ * \return
+ *
+ */
 void RandAllInfo(AVLtree tree)
 {
     if(!tree)       //为空返回
@@ -531,6 +664,13 @@ void RandAllInfo(AVLtree tree)
     RandAllInfo(tree->rchild);
 }
 
+/** \brief SameAtt共同关注，调用set_intersection取并集
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void SameAtt(void)
 {
     AVLtree newtree, p1, p2;
@@ -564,7 +704,14 @@ void SameAtt(void)
     }
 }
 
+/** \brief SameHobby共同喜好，通过递归实现
 
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void SameHobby(void)
 {
     AVLtree  p1, p2;
@@ -588,6 +735,13 @@ void SameHobby(void)
     }
 }
 
+/** \brief FindHobby找共同喜好，递归实现
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void FindHobby(AVLtree T1, AVLtree T2)
 {
     if(T1 == NULL) return;  //遍历T1
@@ -601,6 +755,13 @@ void FindHobby(AVLtree T1, AVLtree T2)
 
 }
 
+/** \brief FindName找名字
+ *
+ * \param
+ * \param
+ * \return bool 找到则返回真
+ *
+ */
 bool FindName(AVLtree tree, char *name)
 {
     if(tree == NULL)
@@ -618,6 +779,13 @@ bool FindName(AVLtree tree, char *name)
         return false;
 }
 
+/** \brief TwoFriend二度好友
+ *          通过临时文件来获得朋友信息
+ * \param
+ * \param
+ * \return
+ *
+ */
 void TwoFriend(void)
 {
     AVLtree  p1, temp;
@@ -690,12 +858,12 @@ void SaveTraverseName(AVLtree T, FILE *fp)
 
 /** \brief   保存所有信息到文件   info.dat
  *
- *      保存格式
+ *      保存格式 ：
  *     信息个数
- *      好友信息： 个数
- *      粉丝信息： 个数
- *   关注信息：  个数
- *    爱好信息：  个数
+ *      好友信息： 个数  信息
+ *      粉丝信息： 个数  信息
+ *   关注信息：  个数  信息
+ *    爱好信息：  个数  信息
  *
  */
 
@@ -716,7 +884,7 @@ void SaveInfo(void)
         printf("文件打开失败!");
     }
 }
-
+//遍历保存每一条信息
 void SaveTraverseInfo(AVLtree T, FILE *fp)
 {
     if(T == NULL) return;
@@ -739,6 +907,13 @@ void SaveTraverseInfo(AVLtree T, FILE *fp)
     SaveTraverseInfo(T->rchild, fp);   //访问右子树
 }
 
+/** \brief 遍历喜好信息，保存到文件
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void SaveTraverseHobby(AVLtree T, FILE *fp)
 {
     if(T == NULL) return;
@@ -748,7 +923,13 @@ void SaveTraverseHobby(AVLtree T, FILE *fp)
     SaveTraverseHobby(T->rchild, fp);   //访问右子树
 }
 
-
+/** \brief 加载用户名树到gp_all_name全局变量树头节点
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void LoadName(void)
 {
     FILE *fp;
@@ -778,6 +959,13 @@ void LoadName(void)
     }
 }
 
+/** \brief 加载每条用户信息
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void LoadInfo(void)
 {
     FILE *fp;
@@ -813,6 +1001,13 @@ void LoadInfo(void)
     }
 }
 
+/** \brief 加载每条用户信息，具体到加载朋友，粉丝、关注
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void LoadEachInfo(AVLtree *T, FILE *fp)
 {
     int length, i,  id;
@@ -831,6 +1026,13 @@ void LoadEachInfo(AVLtree *T, FILE *fp)
     }
 }
 
+/** \brief 加载爱好
+ *
+ * \param
+ * \param
+ * \return
+ *
+ */
 void LoadEachHobby(AVLtree *T, FILE *fp)
 {
     int length, i;

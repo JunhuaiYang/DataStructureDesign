@@ -1,5 +1,10 @@
+/** \brief 该文件用于保存菜单相关函数
+ *
+ *
+ */
 #include"menu.h"
 
+//主菜单显示函数
 void menu(void)
 {
     SMALL_RECT Rec = {2, 1, 90, 15};
@@ -17,7 +22,7 @@ void menu(void)
     printf("请输入要进行的操作：");
 }
 
-
+//ADT菜单显示函数
 void ADT_menu()
 {
     SMALL_RECT Rec = {2, 1, 90, 20};
@@ -50,6 +55,7 @@ void ADT_menu()
     printf("请输入要进行的操作：");
 }
 
+//微博功能应用菜单显示函数
 void weibo_Menu(void)
 {
     SMALL_RECT Rec = {2, 1, 90, 20};
@@ -80,7 +86,7 @@ void weibo_Menu(void)
     printf("请输入要进行的操作：");
 }
 
-
+//ADT菜单执行函数
 void ADT_main(void)
 {
     int op = 1;
@@ -592,7 +598,7 @@ void ADT_main(void)
 }
 
 
-
+//微博功能菜单执行函数
 void weibo_main(void)
 {
     int op = 1;
@@ -713,65 +719,3 @@ void weibo_main(void)
 
     }
 }
-
-//void first_menu()
-//{
-//    SMALL_RECT Rec = {2, 1, 90, 20};
-//    AVLtree p= NULL;
-//    int op = 1;
-//
-//    while(op)
-//    {
-//        system("cls");
-//        printf("\t\t基于AVL表示及调用其6种基本运算实现集合ADT的基本运算");
-//        if(p)
-//            printf("\n\n\t当前存在树");
-//        else
-//            printf("\n当前不存在树");
-//
-//        printf("\n                     1. InitAVL                   2. DestroyAVL");
-//        printf("\n                     3. SearchAVL                 4. InsertAVL");
-//        printf("\n                     5. DeleteAVL                 6. TraverseAVL");
-//
-//        printf("\n\n                     0.  Back                ");
-//
-//        DrawBox(&Rec);
-//        GotoXY(2,21);
-//        printf("请输入要进行的操作：");
-//        scanf("%d", &op);
-//
-//        switch (op)
-//        {
-//        case 1:
-//            if (p != NULL)
-//            {
-//                printf("\n当前树已经初始化！");
-//            }
-//            else
-//            {
-//                if(Init)
-//            }
-//            break;
-//
-//        case 2:
-//            break;
-//
-//        case 3:
-//            break;
-//
-//        case 4:
-//            break;
-//
-//        case 5:
-//            break;
-//
-//        case 6:
-//            break;
-//
-//        default:
-//            break;
-//        }
-//    }
-//}
-
-
