@@ -30,7 +30,7 @@ void DeleteOneAtt(void);
 void DeleteOneHobby(void);
 
 void RandName(void);
-void RandOneInfo(Info *data);
+void RandOneInfo(AVLtree tree);
 void RandAllInfo(AVLtree tree);
 
 void SameAtt(void);

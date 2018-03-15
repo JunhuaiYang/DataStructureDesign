@@ -143,7 +143,8 @@ void AddOnesFriend(void)
         if (p)     //找到
         {
             temp->data.friends = InsertAVL(temp->data.friends, p->data);  //相当于在此处新建树
-            printf("\n%s       添加成功！",p->data.nickname);
+            p->data.friends = InsertAVL(p->data.friends, temp->data);      //双向添加好友
+            printf("\n%s       添加成功！对方也成功添加好友！",p->data.nickname);
         }
         else   //没有找到
         {
@@ -172,6 +173,7 @@ void AddOnesFans(void)
         if (p)     //找到
         {
             temp->data.fans = InsertAVL(temp->data.fans, p->data);  //相当于在此处新建树
+            p->data.attentions = InsertAVL(p->data.attentions, temp->data);   //添加粉丝的关注
             printf("\n%s       添加成功！",p->data.nickname);
         }
         else   //没有找到
@@ -201,6 +203,7 @@ void AddOnesAtt(void)
         if (p)     //找到
         {
             temp->data.attentions = InsertAVL(temp->data.attentions, p->data);  //相当于在此处新建树
+            p->data.fans = InsertAVL(p->data.fans, temp->data);      //在关注处添加粉丝
             printf("\n%s       添加成功！",p->data.nickname);
         }
         else   //没有找到
@@ -280,7 +283,7 @@ void DeleteOneFans(void)
 {
     int id;
     char key;
-    AVLtree temp, p;
+    AVLtree temp, p, p2, p3;
     printf("请输入要编辑的用户编号：");
     scanf("%d",&id);
 
@@ -293,13 +296,23 @@ void DeleteOneFans(void)
         printf("\n请输入要删除粉丝的用户编号：");
         scanf("%d",&id);
         p = SearchAVL(temp->data.fans, id);  //搜索 在粉丝中
+        p2 = SearchAVL(gp_all_name, id);    //在总树中搜索
         if (p)     //找到
         {
             printf("\n\n是否删除？是请按Y，否则按任意键\n");
             scanf(" %c",&key);
             if(key == 'Y' || key == 'y')
             {
-                temp->data.fans = DeleteAVL(temp->data.fans, p);
+                temp->data.fans = DeleteAVL(temp->data.fans, p);  //删除
+                //在该粉丝中的关注中删除
+                if(p2)
+                {
+                    p3 = SearchAVL(p2->data.attentions, temp->data.id);   //在关注中找是否存在
+                    if(p3)
+                    {
+                        p2->data.attentions = DeleteAVL(p2->data.attentions, p3);   //删除
+                    }
+                }
                 printf("\n删除成功！");
             }
         }
@@ -318,7 +331,7 @@ void DeleteOneAtt(void)
 {
     int id;
     char key;
-    AVLtree temp, p;
+    AVLtree temp, p ,p2, p3;
     printf("请输入要编辑的用户编号：");
     scanf("%d",&id);
 
@@ -331,13 +344,23 @@ void DeleteOneAtt(void)
         printf("\n请输入要删除关注的用编号：");
         scanf("%d",&id);
         p = SearchAVL(temp->data.attentions, id);  //搜索 在关注中
+        p2 = SearchAVL(gp_all_name, id);    //在总树中搜索
         if (p)     //找到
         {
             printf("\n\n是否删除？是请按Y，否则按任意键\n");
             scanf(" %c",&key);
             if(key == 'Y' || key == 'y')
             {
-                temp->data.attentions = DeleteAVL(temp->data.attentions, p);
+                temp->data.attentions = DeleteAVL(temp->data.attentions, p);  //删除
+                //在改关注的粉丝中删除
+                if(p2)
+                {
+                    p3 = SearchAVL(p2->data.fans, temp->data.id);   //在粉丝中找是否存在
+                    if(p3)
+                    {
+                        p2->data.fans = DeleteAVL(p2->data.fans, p3);   //删除
+                    }
+                }
                 printf("\n删除成功！");
             }
         }
@@ -437,7 +460,7 @@ void RandName(void)
 
 }
 
-void RandOneInfo(Info *data)
+void RandOneInfo(AVLtree tree)
 {
     int ra_num, i, ra_id;
     AVLtree temp;
@@ -445,52 +468,55 @@ void RandOneInfo(Info *data)
     char *hobby[] = {"篮球", "足球","乒乓球","羽毛球","排球","看书","学习","听音乐","看电影","摄影"};
     Info ho;
 
-    if(!data->friends)  //如果该节点为空
+    if(!tree->data.friends)  //如果该节点为空
     {
-        printf("\n\n正在随机创建 %s 的朋友信息", data->nickname);
+        printf("\n\n正在随机创建 %s 的朋友信息", tree->data.nickname);
         ra_num = GetRand(MAX_RAND);   //随机生成随机的条数
         for(i=0;i<ra_num; i++ )
         {
             ra_id = GetRand(g_count);  //在目前所有信息条数下
             temp = SearchAVL(gp_all_name, ra_id);
-            data->friends = InsertAVL(data->friends, temp->data);  //将找到的数据存入
-            printf("\n当前生成：%s  的第%d位朋友 %s  !",data->nickname,i+1, temp->data.nickname);
+            tree->data.friends = InsertAVL(tree->data.friends, temp->data);  //将找到的数据存入
+            temp->data.friends = InsertAVL(temp->data.friends, tree->data);  //朋友间应该互为好友
+            printf("\n当前生成：%s  的第%d位朋友 %s  !",tree->data.nickname ,i+1, temp->data.nickname);
         }
     }
-    if(!data->attentions)  //如果该节点为空
+    if(!tree->data.attentions)  //如果该节点为空
     {
-        printf("\n\n正在随机创建 %s 的关注信息", data->nickname);
+        printf("\n\n正在随机创建 %s 的关注信息", tree->data.nickname);
         ra_num = GetRand(MAX_RAND);   //随机生成随机的条数
         for(i=0;i<ra_num; i++ )
         {
             ra_id = GetRand(g_count);  //在目前所有信息条数下
             temp = SearchAVL(gp_all_name, ra_id);
-            data->attentions = InsertAVL(data->attentions, temp->data);  //将找到的数据存入
-            printf("\n当前生成：%s  的第%d个关注 %s  !",data->nickname,i+1, temp->data.nickname);
+            tree->data.attentions = InsertAVL(tree->data.attentions, temp->data);  //将找到的数据存入
+            temp->data.fans = InsertAVL(temp->data.fans, tree->data);        //关注者生成该粉丝
+            printf("\n当前生成：%s  的第%d个关注 %s  !",tree->data.nickname,i+1, temp->data.nickname);
         }
     }
-    if(!data->fans)  //如果该节点为空
+    if(!tree->data.fans)  //如果该节点为空
     {
-        printf("\n\n正在随机创建 %s 的粉丝信息", data->nickname);
+        printf("\n\n正在随机创建 %s 的粉丝信息", tree->data.nickname);
         ra_num = GetRand(MAX_RAND);   //随机生成随机的条数
         for(i=0;i<ra_num; i++ )
         {
             ra_id = GetRand(g_count);  //在目前所有信息条数下
             temp = SearchAVL(gp_all_name, ra_id);
-            data->fans = InsertAVL(data->fans, temp->data);  //将找到的数据存入
-            printf("\n当前生成：%s  的第%d位粉丝 %s  !",data->nickname,i+1, temp->data.nickname);
+            tree->data.fans = InsertAVL(tree->data.fans, temp->data);  //将找到的数据存入
+            temp->data.attentions = InsertAVL(tree->data.attentions, temp->data);   //粉丝生成关注
+            printf("\n当前生成：%s  的第%d位粉丝 %s  !",tree->data.nickname ,i+1, temp->data.nickname);
         }
     }
-    if(!data->hobby)  //如果该节点为空
+    if(!tree->data.hobby)  //如果该节点为空
     {
-        printf("\n\n正在随机创建 %s 的爱好信息", data->nickname);
+        printf("\n\n正在随机创建 %s 的爱好信息", tree->data.nickname);
         ra_num = GetRand(3);   //随机生成随机的条数  3条内
         for(i=0;i<ra_num; i++ )
         {
             strcpy(ho.nickname, hobby[GetRand(10)-1]);   //随机选择爱好
             ho.id = GetRand(100);   //随机生成爱好id用于创建二叉树
-            data->hobby = InsertAVL(data->hobby, ho);  //将找到的数据存入
-            printf("\n当前生成：%s  的第%d个爱好 %s  !",data->nickname,i+1, ho.nickname);
+            tree->data.hobby = InsertAVL(tree->data.hobby, ho);  //将找到的数据存入
+            printf("\n当前生成：%s  的第%d个爱好 %s  !",tree->data.nickname,i+1, ho.nickname);
         }
     }
 }
@@ -501,7 +527,7 @@ void RandAllInfo(AVLtree tree)
         return;
     //遍历来生成所有信息
     RandAllInfo(tree->lchild);
-    RandOneInfo(&tree->data);      //调用名字生成
+    RandOneInfo(tree);      //调用名字生成
     RandAllInfo(tree->rchild);
 }
 
